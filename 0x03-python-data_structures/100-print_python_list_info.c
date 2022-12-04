@@ -1,28 +1,28 @@
-#ifndef LISTS_H
-#define LISTS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "Python.h"
 /**
- * struct listint_s - singly linked list
- * @n: integer
- * @next: points to the next node
- *
- * Description: singly linked list node structure
- * for Holberton project
- */
-typedef struct listint_s
+ * print_python_list_info - Prints information about python objects
+ * @p: PyObject pointer to print info about
+ * Compile with:
+ * gcc -Wall -Werror -Wextra -pedantic -std=c99 -shared
+ (* -Wl,-soname,PyList -o libPyList.so -fPIC -I/usr/include/python3.4
+ (* 100-print_python_list_info.c
+*/
+void print_python_list_info(PyObject *p)
 {
-	int n;
-	struct listint_s *next;
-} listint_t;
+	Py_ssize_t i, py_list_size;
+	PyObject *item;
+	const char *item_type;
+	PyListObject *list_object_cast;
 
-size_t print_listint(const listint_t *h);
-listint_t *add_nodeint_end(listint_t **head, const int n);
-void free_listint(listint_t *head);
+	list_object_cast = (PyListObject *)p;
+	py_list_size = PyList_Size(p);
 
-int is_palindrome(listint_t **head);
-int rec_palindrome(listint_t **head, listint_t *tail);
-
-#endif /* LISTS_H */
+	printf("[*] Size of the Python List = %d\n", (int) py_list_size);
+	printf("[*] Allocated = %d\n", (int)list_object_cast->allocated);
+	for (i = 0; i < py_list_size; i++)
+	{
+		item = PyList_GetItem(p, i);
+		item_type = Py_TYPE(item)->tp_name;
+		printf("Element %d: %s\n", (int) i, item_type);
+	}
+}
