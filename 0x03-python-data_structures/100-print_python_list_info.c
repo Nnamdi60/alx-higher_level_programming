@@ -1,21 +1,28 @@
-#include <Python.h>
+#ifndef LISTS_H
+#define LISTS_H
+
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
- * print_python_list_info - Prints basic info about Python lists.
- * @p: A PyObject list.
+ * struct listint_s - singly linked list
+ * @n: integer
+ * @next: points to the next node
+ *
+ * Description: singly linked list node structure
+ * for Holberton project
  */
+typedef struct listint_s
+{
+	int n;
+	struct listint_s *next;
+} listint_t;
 
-void print_python_list_info(PyObject *p)
-{
-int size, alloc, i;
-PyObject *obj;
-size = Py_SIZE(p);
-alloc = ((PyListObject *)p)->allocated;
-printf("[*] Size of the Python List = %d\n", size);
-printf("[*] Allocated = %d\n", alloc);
-for (i = 0; i < size; i++)
-{
-printf("Element %d: ", i);
-obj = PyList_GetItem(p, i);
-printf("%s\n", Py_TYPE(obj)->tp_name);
-}
+size_t print_listint(const listint_t *h);
+listint_t *add_nodeint_end(listint_t **head, const int n);
+void free_listint(listint_t *head);
+
+int is_palindrome(listint_t **head);
+int rec_palindrome(listint_t **head, listint_t *tail);
+
+#endif /* LISTS_H */
